@@ -1,0 +1,10 @@
+[
+  {
+    "label": "Debug http_server",
+    "adapter": "CodeLLDB",
+    "program": "$ZED_WORKTREE_ROOT/http_server",
+    "request": "launch",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "stopAtEntry": true
+  }
+]
