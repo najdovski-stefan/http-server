@@ -21,8 +21,8 @@ char *parse_get(char *get_request, size_t req_length){
 
     start++;
 
-    for(end = start; start[0] != ' '; end++){
-        if(start[0] == '\0'){
+    for(end = start; end[0] != ' '; end++){
+        if(end[0] == '\0'){
             return NULL;
         }
     }
@@ -44,8 +44,8 @@ char *parse_get(char *get_request, size_t req_length){
 
 int main([[maybe_unused]]int argc, [[maybe_unused]]char* argv[]){
 
-    char *header = "HTTP/1.1 200 OK";
-    write(1,header,strlen(header));
+    // char *header = "HTTP/1.1 200 OK";
+    // write(1,header,strlen(header));
 
     char request[] = "GET / HTTP/1.1\nHost: example.com";
 
