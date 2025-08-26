@@ -1,4 +1,7 @@
 /.vscode
 /http_server.dSYM
-/src
 http_server
+src/main.dSYM/Contents/Resources/Relocations/x86_64/main.yml
+src/main.dSYM/Contents/Resources/DWARF/main
+src/main.dSYM/Contents/Info.plist
+src/main
