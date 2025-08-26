@@ -49,7 +49,7 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char* argv[]){
 
     char request[] = "GET / HTTP/1.1\nHost: example.com";
 
-    printf("%s\"\n", parse_get(request, strlen(request)));
+    printf("%s\n", parse_get(request, strlen(request)));
 
 
     return EXIT_SUCCESS;
