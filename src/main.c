@@ -102,11 +102,12 @@ void printFile(char *path){
         exit(EXIT_FAILURE);
     }
 
-    buffer[bytes] = '\0'
+    buffer[bytes] = '\0';
+    printf("FILE CONTENTS:%s\n",buffer);
 
 
     close(fd);
-
+    free(buffer);
 
 }
 
