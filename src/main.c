@@ -50,17 +50,19 @@ void printFile(char *path){
 
     if (fd == -1) {
         perror("open");
-        exit(-1);
+        exit(EXIT_FAILURE);
     }
 
     struct stat metadata;
+
     // Get file metadata using file descriptor
     if (fstat(fd, &metadata) == -1) {
         perror("fstat");
         close(fd);
-        exit(-1);
+        exit(EXIT_FAILURE);
     }
 
+    // for study only this is my first encounter to this library
     printf("File: %s\n", path);
     printf("Size: %lld bytes\n", metadata.st_size);
     printf("Mode: %o\n", metadata.st_mode & 0777);
@@ -79,6 +81,29 @@ void printFile(char *path){
     } else if (S_ISLNK(metadata.st_mode)) {
         printf("Type: Symbolic link\n");
     }
+
+    //allocate memory
+    // metadata.st_size + \0
+
+    char *buffer = malloc(metadata.st_size + 1);
+
+    if(buffer == NULL){
+        perror("Error MemoryAlloc!");
+        close(fd);
+        free(buffer);
+        exit(EXIT_FAILURE);
+    }
+
+    ssize_t bytes = read(fd, buffer, metadata.st_size);
+    if(bytes == -1){
+        perror("Error reading file");
+        close(fd);
+        free(buffer);
+        exit(EXIT_FAILURE);
+    }
+
+    buffer[bytes] = '\0'
+
 
     close(fd);
 
