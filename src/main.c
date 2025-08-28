@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <time.h>
 
 #define INDEX_FILE "index.html"
-
 
 char *parse_get(char *get_request, size_t req_length){
 
@@ -42,6 +43,48 @@ char *parse_get(char *get_request, size_t req_length){
     return start+1;
 }
 
+void printFile(char *path){
+
+    //File Descriptor
+    int fd = open(path, O_RDONLY);
+
+    if (fd == -1) {
+        perror("open");
+        exit(-1);
+    }
+
+    struct stat metadata;
+    // Get file metadata using file descriptor
+    if (fstat(fd, &metadata) == -1) {
+        perror("fstat");
+        close(fd);
+        exit(-1);
+    }
+
+    printf("File: %s\n", path);
+    printf("Size: %lld bytes\n", metadata.st_size);
+    printf("Mode: %o\n", metadata.st_mode & 0777);
+    printf("Links: %d\n", metadata.st_nlink);
+    printf("UID: %d\n", metadata.st_uid);
+    printf("GID: %d\n", metadata.st_gid);
+    printf("Last accessed: %s", ctime(&metadata.st_atime));
+    printf("Last modified: %s", ctime(&metadata.st_mtime));
+    printf("Last status change: %s", ctime(&metadata.st_ctime));
+
+    // Check file type
+    if (S_ISREG(metadata.st_mode)) {
+        printf("Type: Regular file\n");
+    } else if (S_ISDIR(metadata.st_mode)) {
+        printf("Type: Directory\n");
+    } else if (S_ISLNK(metadata.st_mode)) {
+        printf("Type: Symbolic link\n");
+    }
+
+    close(fd);
+
+
+}
+
 int main([[maybe_unused]]int argc, [[maybe_unused]]char* argv[]){
 
     // char *header = "HTTP/1.1 200 OK";
@@ -50,6 +93,8 @@ int main([[maybe_unused]]int argc, [[maybe_unused]]char* argv[]){
     char request[] = "GET / HTTP/1.1\nHost: example.com";
 
     printf("%s\n", parse_get(request, strlen(request)));
+
+    printFile(INDEX_FILE);
 
 
     return EXIT_SUCCESS;
